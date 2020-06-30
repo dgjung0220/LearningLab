@@ -3,10 +3,12 @@ package me.dgjung.learninglab;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,11 +17,18 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -33,6 +42,10 @@ public class AddActivity extends AppCompatActivity {
     private static final long LOCATION_RATE_GPS_MS = TimeUnit.SECONDS.toMillis(1L);
     private static final long LOCATION_RATE_NETWORK_MS = TimeUnit.SECONDS.toMillis(60L);
 
+    // Log ...
+    private String locationStream = null;
+    private FileLogger mFileLogger;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,13 +58,43 @@ public class AddActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate");
         prepareSensors();
 
+        mFileLogger = new FileLogger(getApplicationContext());
+        mFileLogger.startNewLog();
+
+
         finishButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mFileLogger.send();
+
+                File mFile = mFileLogger.getMfile();
+
+                if (mFile != null) {
+//                    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+//                    emailIntent.setType("*/*");
+//                    emailIntent.putExtra(Intent.EXTRA_SUBJECT, "SensorLog");
+//                    emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+//
+//                    // attach the file
+//                    Uri fileURI =
+//                            FileProvider.getUriForFile(AddActivity.this, BuildConfig.APPLICATION_ID, mFile);
+//                    emailIntent.putExtra(Intent.EXTRA_STREAM, fileURI);
+//
+//                    emailIntent.addFlags(FLAG_GRANT_READ_URI_PERMISSION);
+//                    emailIntent.addFlags(FLAG_GRANT_WRITE_URI_PERMISSION);
+//
+//                    startActivity(Intent.createChooser(emailIntent, "Send logs..."));
+
+                    Intent intent = new Intent(AddActivity.this, MainActivity.class);
+                    intent.putExtra("FILE", mFile);
+                    startActivity(intent);
+                    finish();
+                }
 
             }
         });
     }
+
 
     public void prepareSensors() {
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -91,7 +134,7 @@ public class AddActivity extends AppCompatActivity {
         @Override
         public void onLocationChanged(Location location) {
 
-            String locationStream=
+            locationStream=
                     String.format(
                             Locale.US,
                             "%s,%s,%d,%f,%f,%f,%f,%f,%f,%f,%f",
@@ -116,6 +159,11 @@ public class AddActivity extends AppCompatActivity {
             log.append(locationStream);
 
             logView.setText(log);
+            try {
+                mFileLogger.writeLogs(locationStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         @Override

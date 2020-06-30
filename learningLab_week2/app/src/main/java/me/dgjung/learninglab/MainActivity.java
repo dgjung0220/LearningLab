@@ -4,28 +4,30 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,6 +74,27 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        Intent intent = getIntent();
+        File mFile = (File) intent.getSerializableExtra("FILE");
+
+        if (mFile != null) {
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+            emailIntent.setType("*/*");
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "SensorLog");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "");
+
+            // attach the file
+            Uri fileURI =
+                    FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID, mFile);
+            emailIntent.putExtra(Intent.EXTRA_STREAM, fileURI);
+
+            emailIntent.addFlags(FLAG_GRANT_READ_URI_PERMISSION);
+            emailIntent.addFlags(FLAG_GRANT_WRITE_URI_PERMISSION);
+
+            startActivity(Intent.createChooser(emailIntent, "Send logs..."));
+        }
+
     }
 
     private static class ItemsOnClickListener implements View.OnClickListener {
