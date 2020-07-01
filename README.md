@@ -12,6 +12,16 @@
 
 ##### Week1
 
-- 화면 구성 (RecyclerView, CardView 이용한 리스트 만들기)
+- 화면 구성 1(RecyclerView, CardView 이용한 리스트 만들기)
 - 데이터베이스 연동 (Android SQLite 연동하여 관련 데이터 저장하기)
 
+##### Week2
+
+- GPS 센서 데이터 측정, 로깅, 파일 저장
+- 이메일, 구글 드라이브로 저정된 csv 파일 전송하기
+
+##### Week3
+
+- Node.js 를 이용한 서버 프로그램 구현
+- 안드로이드에서 서버로 데이터 실시간 전송하기
+- (Option) Realtime Database 
