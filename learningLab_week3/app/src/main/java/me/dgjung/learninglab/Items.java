@@ -6,6 +6,7 @@ import android.os.Parcelable;
 /* POJO */
 public class Items {
 
+    private int _id; /* Auto increment */
     private int stepCount;
     private int spendTime;
     private String measureDate;
@@ -21,6 +22,18 @@ public class Items {
         this.stepCount = stepCount;
         this.spendTime = spendTime;
         this.measureDate = measureDate;
+    }
+
+    public Items(int _id, int stepCount, int spendTime, String measureDate, String locationFilePath, String measurementFilePath, String navigationFilePath, String gpsStatusFilePath, String nmeaFilePath) {
+        this._id = _id;
+        this.stepCount = stepCount;
+        this.spendTime = spendTime;
+        this.measureDate = measureDate;
+        this.locationFilePath = locationFilePath;
+        this.measurementFilePath = measurementFilePath;
+        this.navigationFilePath = navigationFilePath;
+        this.gpsStatusFilePath = gpsStatusFilePath;
+        this.nmeaFilePath = nmeaFilePath;
     }
 
     public int getStepCount() {
@@ -87,4 +100,17 @@ public class Items {
         this.nmeaFilePath = nmeaFilePath;
     }
 
+    @Override
+    public String toString() {
+        return "Items{" +
+                "stepCount=" + stepCount +
+                ", spendTime=" + spendTime +
+                ", measureDate='" + measureDate + '\'' +
+                ", locationFilePath='" + locationFilePath + '\'' +
+                ", measurementFilePath='" + measurementFilePath + '\'' +
+                ", navigationFilePath='" + navigationFilePath + '\'' +
+                ", gpsStatusFilePath='" + gpsStatusFilePath + '\'' +
+                ", nmeaFilePath='" + nmeaFilePath + '\'' +
+                '}';
+    }
 }

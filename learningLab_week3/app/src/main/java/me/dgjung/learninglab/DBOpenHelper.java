@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /* https://m.blog.naver.com/nife0719/221035148567 */
-/* https://blog.ctdefense.com/install-and-root-your-android-emulator/ */
 
 public class DBOpenHelper {
 
@@ -92,4 +91,13 @@ public class DBOpenHelper {
     public boolean deleteColumn(long id) {
         return mDB.delete(Databases.CreateDB._TABLENAME0, "_id="+id, null) > 0;
     }
+
+    public Cursor sortColumns(String sort) {
+        Cursor c = mDB.rawQuery("SELECT * FROM " + Databases.CreateDB._TABLENAME0
+                + " ORDER BY " + sort + " desc;", null);
+
+        return c;
+    }
+
+
 }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
@@ -25,7 +26,6 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
     public static View.OnClickListener itemsOnClickListener;
 
     // DB
-    public ArrayList<String> arrayIndex =  new ArrayList<String>();
-    public ArrayList<String> arrayData = new ArrayList<String>();
     private DBOpenHelper mDBOpenHelper;
 
     @Override
@@ -70,8 +68,13 @@ public class MainActivity extends AppCompatActivity {
         /* make test data */
         //List<Items> data = initializeData();
 
-        //mAdapter = new ItemAdapter(data);
-        //mRecyclerView.setAdapter(mAdapter);
+        mDBOpenHelper = new DBOpenHelper(this);
+        mDBOpenHelper.open();
+        mDBOpenHelper.create();
+
+        List<Items> data = showDBs("_ID");
+        mAdapter = new ItemAdapter(this,data);
+        mRecyclerView.setAdapter(mAdapter);
 
         addButton.setOnClickListener(new Button.OnClickListener() {
             @Override
@@ -105,14 +108,6 @@ public class MainActivity extends AppCompatActivity {
             emailIntent.addFlags(FLAG_GRANT_WRITE_URI_PERMISSION);
             startActivity(Intent.createChooser(emailIntent, "Send logs..."));
         }
-
-
-
-//        if (item != null) {
-//            Log.d("JDG", String.valueOf(item.getSpendTime()));
-//            Log.d("JDG", item.getMeasureDate());
-//            Log.d("JDG", item.getLocationFilePath());
-//        }
     }
 
     private static class ItemsOnClickListener implements View.OnClickListener {
@@ -128,10 +123,6 @@ public class MainActivity extends AppCompatActivity {
             // click 시 생성...
             Toast.makeText(context, "TEST", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void showDatabase() {
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -156,5 +147,34 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public List<Items> showDBs(String sort) {
+
+        ArrayList<Items> list = new ArrayList<>();
+        Cursor iCursor = mDBOpenHelper.sortColumns(sort);
+
+        while(iCursor.moveToNext()) {
+
+            String id = iCursor.getString(iCursor.getColumnIndex("_id"));
+            int stepCount = iCursor.getInt(iCursor.getColumnIndex(Databases.CreateDB.STEPCOUNT));
+            int spendTime = iCursor.getInt(iCursor.getColumnIndex(Databases.CreateDB.SPENDTIME));
+            String measureDate = iCursor.getString(iCursor.getColumnIndex(Databases.CreateDB.MESUREDATE));
+            String locationFilePath = iCursor.getString(iCursor.getColumnIndex(Databases.CreateDB.LOCATIONFILEPATH));
+            String measurementFilePath = iCursor.getString(iCursor.getColumnIndex(Databases.CreateDB.MEASUREMENTFILEPATH));
+            String navigationFilePath = iCursor.getString(iCursor.getColumnIndex(Databases.CreateDB.NAVIGATIONFILEPATH));
+            String gpsStatusFilePath = iCursor.getString(iCursor.getColumnIndex(Databases.CreateDB.GPSSTATUSFILEPATH));
+            String nmeaFilePath = iCursor.getString(iCursor.getColumnIndex(Databases.CreateDB.NMEAFILEPATH));
+
+            Log.d("DBS", id +","+ stepCount +","+ spendTime +","+measureDate+","+locationFilePath+","+measurementFilePath+","+navigationFilePath+","+gpsStatusFilePath+","+nmeaFilePath);
+            list.add(new Items(Integer.parseInt(id), stepCount, spendTime, measureDate, locationFilePath, measurementFilePath, navigationFilePath, gpsStatusFilePath, nmeaFilePath));
+        }
+        return list;
+    }
+
+    public boolean deleteColumns(int index) {
+
+        boolean result = mDBOpenHelper.deleteColumn(index);
+        return result;
     }
 }
