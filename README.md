@@ -10,7 +10,7 @@
   <img src="/3.gif" alt="device-2020-07-01-225911" width="240" height="360" />
  </p>
 
-### Week1
+##### Week1
 
 - 화면 구성 (RecyclerView, CardView 이용한 리스트 만들기)
 - 데이터베이스 연동 (Android SQLite 연동하여 관련 데이터 저장하기)
