@@ -5,6 +5,7 @@
 ### Database + RecyclerView + cardView 템플릿 예제
 
 <img src="/device-2020-07-01-225911.gif" alt="device-2020-07-01-225911" style="zoom:10%;" />
+<img src="/2.gif" alt="device-2020-07-01-225911" style="zoom:10%;" />
 
 ### Week1
 
