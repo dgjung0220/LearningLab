@@ -11,13 +11,7 @@
   <img src="/upload/3.gif" alt="device-2020-07-01-225911" width="240" height="360" />
  </p>
 
-<p float="left">
-  <img src="/upload/device-2020-07-01-225911.gif" alt="device-2020-07-01-225911" width="240" height="360" />
-  <img src="/upload/2.gif" alt="device-2020-07-01-225911" width="240" height="360" />
-  <img src="/upload/3.gif" alt="device-2020-07-01-225911" width="240" height="360" />
- </p>
-
-##### Week1
+##### [Week1](https://github.com/dgjung0220/LearningLab/tree/master/week1)
 
 - 화면 구성 1(RecyclerView, CardView 이용한 리스트 만들기)
 - 데이터베이스 연동 (Android SQLite 연동하여 관련 데이터 저장하기)
