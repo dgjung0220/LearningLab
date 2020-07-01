@@ -8,7 +8,7 @@
 
 ### Database + RecyclerView + cardView 템플릿 예제
 
-<img src="C:%5CUsers%5Cdgjun%5CDesktop%5Cmemos%5Cupload%5Cdevice-2020-07-01-225911.gif" alt="device-2020-07-01-225911" style="zoom:50%;" />
+<img src="/device-2020-07-01-225911.gif" alt="device-2020-07-01-225911" style="zoom:50%;" />
 
 ### Week1
 
