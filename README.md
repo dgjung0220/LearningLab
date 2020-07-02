@@ -17,10 +17,11 @@
 - 데이터베이스 연동 (Android SQLite 연동하여 관련 데이터 저장하기)
  <img src="/upload/week1.gif" alt="week1" width="240" height="360" />
  
-##### Week2
+##### [Week2](https://github.com/dgjung0220/LearningLab/tree/master/week2)
 
 - GPS 센서 데이터 측정, 로깅, 파일 저장
 - 이메일, 구글 드라이브로 저정된 csv 파일 전송하기
+ <video src="/upload/week2.webm" alt="week2" width="240" height="360" />
 
 ##### Week3
 
