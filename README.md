@@ -23,7 +23,7 @@
 - 이메일, 구글 드라이브로 저정된 csv 파일 전송하기
 
 <p float="left>
-  <img src="/upload/week2_1.gif" alt="week2_1" width="240" height="360" />
+  <img src="/upload/week2_2.gif" alt="week2_1" width="240" height="360" />
   <img src="/upload/week2_2.gif" alt="week2_2" width="240" height="360" />  
 </P>
 
