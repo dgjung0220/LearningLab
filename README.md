@@ -29,6 +29,8 @@
 
 ##### [Week3](https://github.com/dgjung0220/LearningLab/tree/master/android/week3)
 
+ <img src="/upload/server.gif" alt="server" width="360" height="240" />
+ 
 - Node.js 를 이용한 서버 프로그램 구현
 - 안드로이드에서 서버로 데이터 실시간 전송하기
 - MongoDB(NoSQL) 다루기
