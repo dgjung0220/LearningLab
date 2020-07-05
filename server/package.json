@@ -1,0 +1,16 @@
+{
+  "name": "android_post_receiver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dg.jung",
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.27.0",
+    "mongodb": "^3.5.9",
+    "mongoose": "^5.9.21"
+  }
+}
