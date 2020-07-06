@@ -35,7 +35,7 @@
  <img src="/upload/server.gif" alt="server" width="640" height="480" />
  
  ##### 클라이언트 (데이터 시각화 영역)
- <img src="/upload/client.JPG" alt="server" width="640" height="480" />
+ <img src="/upload/client.JPG" alt="server" width="840" height="480" />
 
  
 
