@@ -12,7 +12,7 @@
  </p>
 
 ##### [Week1](https://github.com/dgjung0220/LearningLab/tree/master/android/week1)
-
+- 주소록 예제 만들기
 - 화면 구성 1(Constrainlayout, RecyclerView, CardView 이용한 리스트 만들기)
 - 데이터베이스 연동 (Android SQLite 연동하여 관련 데이터 저장하기)
  <img src="/upload/week1.gif" alt="week1" width="240" height="360" />
@@ -28,9 +28,14 @@
 </P>
 
 ##### [Week3](https://github.com/dgjung0220/LearningLab/tree/master/android/week3)
+- 서버 코드 : https://github.com/dgjung0220/LearningLab/tree/master/server
 - Node.js 를 이용한 서버 프로그램 구현
 - 안드로이드에서 서버로 센서 데이터 실시간 전송하기
 - MongoDB(NoSQL) 다루기
  <img src="/upload/server.gif" alt="server" width="640" height="480" />
+ 
+ ##### 클라이언트 (데이터 시각화 영역)
+ <img src="/upload/client.JPG" alt="server" width="840" height="480" />
+
  
 
