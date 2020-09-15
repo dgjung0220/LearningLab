@@ -7,8 +7,8 @@
 
 <p float="left">
   <img src="/upload/device-2020-07-01-225911.gif" alt="device-2020-07-01-225911" width="240" height="360" />
-  <img src="/upload/2.gif" alt="device-2020-07-01-225911" width="240" height="360" />
-  <img src="/upload/3.gif" alt="device-2020-07-01-225911" width="240" height="360" />
+  <img src="/upload/2.gif" alt="2" width="240" height="360" />
+  <img src="/upload/3.gif" alt="3" width="240" height="360" />
  </p>
 
 ##### [Week1](https://github.com/dgjung0220/LearningLab/tree/master/android/week1)
@@ -33,7 +33,7 @@
 - 안드로이드에서 서버로 센서 데이터 실시간 전송하기
 - MongoDB(NoSQL) 다루기
  <img src="/upload/server.gif" alt="server" width="640" height="480" />
- 
+
  ##### 클라이언트 (데이터 시각화 영역)
  <img src="/upload/client.JPG" alt="server" width="840" height="480" />
 

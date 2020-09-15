@@ -36,12 +36,14 @@ public class RegistrationActivity extends AppCompatActivity {
                 address = etAddress.getText().toString();
                 phone = etPhone.getText().toString();
                 profession = etProfession.getText().toString();
+
                 ContentValues values = new ContentValues();
                 values.put(DatabaseContract.UserDatabase.COLUMN_NAME_COLS1, name);
                 values.put(DatabaseContract.UserDatabase.COLUMN_NAME_COLS2, address);
                 values.put(DatabaseContract.UserDatabase.COLUMN_NAME_COLS3, phone);
                 values.put(DatabaseContract.UserDatabase.COLUMN_NAME_COLS4, profession);
                 long rowId = db.insert(DatabaseContract.UserDatabase.TABLE_NAME, null, values);
+
                 if (rowId != -1) {
                     Toast.makeText(RegistrationActivity.this, "User regstered succesfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
