@@ -49,16 +49,17 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     // Sensor...
     private LocationManager mLocationManager;
     private SensorManager sensorManager;
-    private Sensor mAcceleration, mGyro;
+    private Sensor mLinearAcceleration, mAccelerometer, mGyro, mMagnetic;
+    private float[] mGravity, mGeomagnetic;
 
     // Sensor value variables
-    private float accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z;
+    private float accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z, azimuth, pitch, roll;
     private static final long LOCATION_RATE_GPS_MS = TimeUnit.MILLISECONDS.toMillis(1L);
     private static final int SENSOR_DELAY = SensorManager.SENSOR_DELAY_FASTEST;
 
     // Log ...
     private ArrayList<FileLogger> loggers;
-    private FileLogger mFileLogger_location, mFileLogger_acceleration, mFileLogger_gyroscope;
+    private FileLogger mFileLogger_location, mFileLogger_acceleration, mFileLogger_gyroscope, mFileLogger_orientation;
 
     // DB ..
     private DatabaseHelper dbhelper;
@@ -90,6 +91,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         mFileLogger_gyroscope = new FileLogger(getApplicationContext());
         mFileLogger_gyroscope.startNewLog(FileLogger.GYROSCOPE_PREFIX);
         loggers.add(mFileLogger_gyroscope);
+
+        mFileLogger_orientation = new FileLogger(getApplicationContext());
+        mFileLogger_orientation.startNewLog(FileLogger.ORIENTATION_PREFIX);
+        loggers.add(mFileLogger_orientation);
 
         dbhelper = new DatabaseHelper(this);
         db = dbhelper.getWritableDatabase();
@@ -144,6 +149,10 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         gyro_y = 0.0f;
         gyro_z = 0.0f;
 
+        azimuth = 0.0f;
+        pitch = 0.0f;
+        roll = 0.0f;
+
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
 
@@ -163,11 +172,15 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     }
 
     public void registerSensors() {
-        mAcceleration = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        mLinearAcceleration = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        mAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mGyro = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        mMagnetic = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
-        sensorManager.registerListener(this, mAcceleration, SENSOR_DELAY);
-        sensorManager.registerListener(this,mGyro, SENSOR_DELAY);
+        sensorManager.registerListener(this, mLinearAcceleration, SENSOR_DELAY);
+        sensorManager.registerListener(this, mAccelerometer, SENSOR_DELAY);
+        sensorManager.registerListener(this, mGyro, SENSOR_DELAY);
+        sensorManager.registerListener(this, mMagnetic, SENSOR_DELAY);
     }
 
     public void registerLocation() {
@@ -205,8 +218,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
                             location.getAccuracy(),
                             location.getSpeed()
                     );
-
-            Log.d(TAG, locationStream);
 
             StringBuilder log = new StringBuilder();
             log.append(logView.getText());
@@ -262,6 +273,36 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
                 mFileLogger_gyroscope.writeLogs(logStream);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+        }
+
+
+        if (sensorType == Sensor.TYPE_ACCELEROMETER) { mGravity = event.values; }
+        if (sensorType == Sensor.TYPE_MAGNETIC_FIELD) { mGeomagnetic = event.values; }
+
+        if (mGravity != null && mGeomagnetic != null) {
+
+            //Log.d(TAG, "test");
+            float R[] = new float[9];
+            float I[] = new float[9];
+
+            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+            if (success) {
+                float orientationData[] = new float[3];
+                SensorManager.getOrientation(R, orientationData);
+
+                azimuth = orientationData[0];
+                pitch = orientationData[1];
+                roll = orientationData[2];
+
+                String logStream = String.format(Locale.US, "%d,%f,%f,%f", new Date().getTime(), azimuth, pitch, roll);
+
+                Log.d(TAG, logStream);
+                try {
+                    mFileLogger_orientation.writeLogs(logStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }

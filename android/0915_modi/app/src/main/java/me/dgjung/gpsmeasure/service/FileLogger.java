@@ -21,11 +21,13 @@ public class FileLogger {
     public static final String LOCATION_PREFIX = "location";
     public static final String ACCELERATION_PREFIX= "acceleration";
     public static final String GYROSCOPE_PREFIX = "gyroscope";
+    public static final String ORIENTATION_PREFIX = "orientation";
 
     /* CSV Header PREFIX */
     private final String LOCATION_HEADER = "Provider, UserTime, SysTime, Latitude, Longitude, Altitude, Bearing, BearingAccDegress, Acc, Speed, SpeedAccPerSecond";
     private final String ACCEL_HEADER = "SysTime, ACCEL_X, ACCEL_Y, ACCEL_Z";
     private final String GYRO_HEADER = "SysTime, GYRO_X, GYRO_Y, GYRO_Z";
+    private final String ORIENTATION_HEADER = "SysTime, Azimuth(yaw), pitch, roll";
 
     private final Object mFileLock = new Object();
     private final Context mContext;
@@ -80,6 +82,8 @@ public class FileLogger {
                     case GYROSCOPE_PREFIX:
                         currentFileWriter.write(GYRO_HEADER);
                         break;
+                    case ORIENTATION_PREFIX:
+                        currentFileWriter.write(ORIENTATION_HEADER);
                     default:
                         break;
                 }
