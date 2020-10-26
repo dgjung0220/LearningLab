@@ -56,6 +56,27 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/hardware_name_value"
             app:layout_constraintTop_toTopOf="@+id/hardware_year_tv" />
+
+        <TextView
+            android:id="@+id/orientation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:text="Orientation"
+            app:layout_constraintStart_toStartOf="@+id/hardware_year_tv"
+            app:layout_constraintTop_toBottomOf="@+id/hardware_year_tv"/>
+
+        <TextView
+            android:id="@+id/yaw_pitch_roll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:text="3.111111,,"
+            app:layout_constraintBottom_toBottomOf="@+id/orientation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/hardware_year_value"
+            app:layout_constraintTop_toTopOf="@+id/orientation" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -81,7 +102,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"/>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

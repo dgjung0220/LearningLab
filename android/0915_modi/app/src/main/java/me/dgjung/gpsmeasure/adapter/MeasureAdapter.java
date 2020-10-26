@@ -46,14 +46,15 @@ public class MeasureAdapter extends RecyclerView.Adapter<MeasureAdapter.MeasureV
     public void onBindViewHolder(final MeasureViewHolder holder, final int position) {
         Measurements measurements = measurementsList.get(position);
 
-        holder.tvTitle.setText(measurements.getStepCount() + " 걸음 / " + measurements.getSpendTime() + " 초");
+        // holder.tvTitle.setText(measurements.getStepCount() + " 걸음 / " + measurements.getSpendTime() + " 초");
+        holder.tvTitle.setText(measurements.getSpendTime() + " 초");
         holder.tvDate.setText(measurements.getMeasureDate());
 
         holder.locationFilePath.setText(measurements.getLocationFilePath());
-        holder.measurementFilePath.setText(measurements.getMeasurementFilePath());
-        holder.naviFilePath.setText(measurements.getNavigationFilePath());
-        holder.gpsStatusFilePath.setText(measurements.getGpsStatusFilePath());
-        holder.nmeaFilePath.setText(measurements.getNmeaFilePath());
+        //holder.measurementFilePath.setText(measurements.getMeasurementFilePath());
+        //holder.naviFilePath.setText(measurements.getNavigationFilePath());
+        //holder.gpsStatusFilePath.setText(measurements.getGpsStatusFilePath());
+        //holder.nmeaFilePath.setText(measurements.getNmeaFilePath());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,10 +113,10 @@ public class MeasureAdapter extends RecyclerView.Adapter<MeasureAdapter.MeasureV
             tvDate = itemView.findViewById(R.id.tv_date);
 
             locationFilePath = itemView.findViewById(R.id.location_file_path);
-            measurementFilePath = itemView.findViewById(R.id.measurement_file_path);
-            naviFilePath = itemView.findViewById(R.id.navi_file_path);
-            gpsStatusFilePath = itemView.findViewById(R.id.gpsStatus_file_path);
-            nmeaFilePath = itemView.findViewById(R.id.nmea_file_path);
+//            measurementFilePath = itemView.findViewById(R.id.measurement_file_path);
+//            naviFilePath = itemView.findViewById(R.id.navi_file_path);
+//            gpsStatusFilePath = itemView.findViewById(R.id.gpsStatus_file_path);
+//            nmeaFilePath = itemView.findViewById(R.id.nmea_file_path);
         }
     }
 }

@@ -115,7 +115,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
                 Random rnd = new Random();
 
                 ContentValues values = new ContentValues();
-                values.put(DatabaseContract.MeasurementsDatabase.COL_NAME_1, rnd.nextInt(5000) + 2000);
+                values.put(DatabaseContract.MeasurementsDatabase.COL_NAME_1, 0000);
                 values.put(DatabaseContract.MeasurementsDatabase.COL_NAME_2, spendTime);
                 values.put(DatabaseContract.MeasurementsDatabase.COL_NAME_3, getCurrentTimes());
                 values.put(DatabaseContract.MeasurementsDatabase.COL_NAME_4, getFilename(String.valueOf(file_list.get(0))));
@@ -195,16 +195,15 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             String locationStream =
                     String.format(
                             Locale.US,
-                            "%s,%s,%d,%f,%f,%f,%f,%f,%f",
-                            location.getProvider(),
-                            getCurrentTimes(),
+                            "%d,%f,%f,%f,%f,%f,%f,%f",
                             location.getTime(),
                             location.getLatitude(),
                             location.getLongitude(),
-                            location.getAltitude(),
                             location.getBearing(),
-                            location.getAccuracy(),
-                            location.getSpeed()
+                            location.getSpeed(),
+                            azimuth,
+                            pitch,
+                            roll
                     );
 
             StringBuilder log = new StringBuilder();
@@ -213,6 +212,9 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             log.append(locationStream);
 
             logView.setText(log);
+
+            Log.d(TAG, locationStream);
+
             try {
                 mFileLogger_location.writeLogs(locationStream);
             } catch (IOException e) {
@@ -287,8 +289,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
                 roll = orientationData[2] * 57.2957795f;
 
                 String logStream = String.format(Locale.US, "%d,%f,%f,%f", new Date().getTime(), azimuth, pitch, roll);
-
-                Log.d(TAG, logStream);
                 try {
                     mFileLogger_orientation.writeLogs(logStream);
                 } catch (IOException e) {

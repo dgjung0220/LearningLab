@@ -13,6 +13,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
@@ -25,10 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import me.dgjung.gpsmeasure.BuildConfig;
@@ -43,13 +49,18 @@ import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 import static android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION;
 import static me.dgjung.gpsmeasure.service.Utils.getCurrentTimes;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     DatabaseHelper dbhelper;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter measureAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private TextView hardwareName, hardwareYear;
+
+    private TextView ypr;
+    private SensorManager sensorManager;
+    private Sensor mLinearAcceleration, mAccelerometer, mGyro, mMagnetic;
+    private float[] mGravity, mGeomagnetic;
 
     Button btnMeasureStart;
     private List<Measurements> measurementsList;
@@ -70,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = findViewById(R.id.main_recyclerview);
         hardwareName = findViewById(R.id.hardware_name_value);
         hardwareYear = findViewById(R.id.hardware_year_value);
+
+        ypr = findViewById(R.id.yaw_pitch_roll);
 
         btnMeasureStart.setOnClickListener(new View.OnClickListener() {
 
@@ -114,12 +127,20 @@ public class MainActivity extends AppCompatActivity {
         measureAdapter = new MeasureAdapter(measurementsList);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(measureAdapter);
+
+        sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mMagnetic = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        sensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+        sensorManager.registerListener(this, mMagnetic, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         db.close();
+        sensorManager.unregisterListener(this);
     }
 
     public List<Measurements> showDBs() {
@@ -174,5 +195,40 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+
+        int sensorType = event.sensor.getType();
+
+        if (sensorType == Sensor.TYPE_ACCELEROMETER) { mGravity = event.values; }
+        if (sensorType == Sensor.TYPE_MAGNETIC_FIELD) { mGeomagnetic = event.values; }
+
+        if (mGravity != null && mGeomagnetic != null) {
+
+            float R[] = new float[9];
+            float I[] = new float[9];
+
+            boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
+            if (success) {
+
+                float[] outGravity = new float[9];
+                SensorManager.remapCoordinateSystem(R, SensorManager.AXIS_X, SensorManager.AXIS_Z, outGravity);
+                float orientationData[] = new float[3];
+                SensorManager.getOrientation(outGravity, orientationData);
+
+                float azimuth = orientationData[0] * 57.2957795f;
+                float pitch = orientationData[1] * 57.2957795f;
+                float roll = orientationData[2] * 57.2957795f;
+
+                ypr.setText(azimuth + "," + pitch + "," + roll);
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }

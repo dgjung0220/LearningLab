@@ -24,7 +24,7 @@ public class FileLogger {
     public static final String ORIENTATION_PREFIX = "orientation";
 
     /* CSV Header PREFIX */
-    private final String LOCATION_HEADER = "Provider, UserTime, SysTime, Latitude, Longitude, Altitude, Bearing, BearingAccDegress, Acc, Speed, SpeedAccPerSecond";
+    private final String LOCATION_HEADER = "SysTime, Latitude, Longitude, Bearing, Speed";
     private final String ACCEL_HEADER = "SysTime, ACCEL_X, ACCEL_Y, ACCEL_Z";
     private final String GYRO_HEADER = "SysTime, GYRO_X, GYRO_Y, GYRO_Z";
     private final String ORIENTATION_HEADER = "SysTime, Azimuth(yaw), pitch, roll";
