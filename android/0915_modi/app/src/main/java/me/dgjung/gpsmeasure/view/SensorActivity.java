@@ -141,18 +141,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
     public void prepareSensors() {
 
-        accel_x = 0.0f;
-        accel_y = 0.0f;
-        accel_z = 0.0f;
-
-        gyro_x = 0.0f;
-        gyro_y = 0.0f;
-        gyro_z = 0.0f;
-
-        azimuth = 0.0f;
-        pitch = 0.0f;
-        roll = 0.0f;
-
         mLocationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
         sensorManager = (SensorManager) this.getSystemService(Context.SENSOR_SERVICE);
 
@@ -288,12 +276,15 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
             boolean success = SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic);
             if (success) {
-                float orientationData[] = new float[3];
-                SensorManager.getOrientation(R, orientationData);
 
-                azimuth = orientationData[0];
-                pitch = orientationData[1];
-                roll = orientationData[2];
+                float[] outGravity = new float[9];
+                SensorManager.remapCoordinateSystem(R, SensorManager.AXIS_X, SensorManager.AXIS_Z, outGravity);
+                float orientationData[] = new float[3];
+                SensorManager.getOrientation(outGravity, orientationData);
+
+                azimuth = orientationData[0] * 57.2957795f;
+                pitch = orientationData[1] * 57.2957795f;
+                roll = orientationData[2] * 57.2957795f;
 
                 String logStream = String.format(Locale.US, "%d,%f,%f,%f", new Date().getTime(), azimuth, pitch, roll);
 
